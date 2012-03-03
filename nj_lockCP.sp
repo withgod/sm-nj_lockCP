@@ -11,7 +11,7 @@
 #include <sdktools>
 #include <sdktools_functions>
 
-#define PLUGIN_VERSION "0.0.1"
+#define PLUGIN_VERSION "0.0.2"
 
 new Handle:g_njLockCP = INVALID_HANDLE;
 new bool:isFirst      = true;
@@ -27,7 +27,6 @@ public Plugin:myinfo =
 
 public OnPluginStart()
 {
-	PrintToServer("plugin start");
 	CreateConVar("nj_lockcp_version", PLUGIN_VERSION, "nj lock the capture", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY);
 	g_njLockCP = CreateConVar("nj_lockcp", "1", "lock the capture Enable/Disable (0 = disabled | 1 = enabled)", 0, true, 0.0, true, 1.0);
 	
@@ -58,32 +57,34 @@ public DisableControlPoints(bool:capState)
 	if (capState) 
 	{
 		PrintToChatAll("[notice] disable all capture point");
+		PrintToServer("[nj] disable all capture point");
 	}
 	else
 	{
 		PrintToChatAll("[notice] enable all capture point");
+		PrintToServer("[nj] enable all capture point");
 	}
 	// https://forums.alliedmods.net/showpost.php?p=1227321&postcount=4
+	// http://forums.alliedmods.net/showthread.php?t=76080
 	// thanks nice sourcecode
+	// AcceptEntityInput Flag Document
+	// https://developer.valvesoftware.com/wiki/Trigger_capture_area
 	new i = -1;
-	new CP = 0;
-	for (new n = 0; n <= 32; n++)
+	while ((i = FindEntityByClassname(i, "trigger_capture_area")) != -1)
 	{
-		CP = FindEntityByClassname(i, "trigger_capture_area");
-		if (IsValidEntity(CP))
-		{
-			if (capState) {
-				AcceptEntityInput(CP, "Disable");
-			}
-			else
-			{
-				AcceptEntityInput(CP, "Enable");
-			}
-			i = CP;
-		} 
+		if (capState) {
+			SetVariantString("2 0");
+			AcceptEntityInput(i, "SetTeamCanCap"); 
+			SetVariantString("3 0");
+			AcceptEntityInput(i, "SetTeamCanCap");
+		}
 		else
 		{
-			break;
+			SetVariantString("2 1");
+			AcceptEntityInput(i, "SetTeamCanCap");
+			SetVariantString("3 1");
+			AcceptEntityInput(i, "SetTeamCanCap");
+		
 		}
 	}
 }
