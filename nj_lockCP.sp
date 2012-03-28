@@ -11,7 +11,7 @@
 #include <sdktools>
 #include <sdktools_functions>
 
-#define PLUGIN_VERSION "0.0.2"
+#define PLUGIN_VERSION "0.0.3"
 
 new Handle:g_njLockCP = INVALID_HANDLE;
 new bool:isFirst      = true;
@@ -56,12 +56,12 @@ public DisableControlPoints(bool:capState)
 {
 	if (capState) 
 	{
-		PrintToChatAll("[notice] disable all capture point");
+		PrintToChatAll("[nj] disable all capture point");
 		PrintToServer("[nj] disable all capture point");
 	}
 	else
 	{
-		PrintToChatAll("[notice] enable all capture point");
+		PrintToChatAll("[nj] enable all capture point");
 		PrintToServer("[nj] enable all capture point");
 	}
 	// https://forums.alliedmods.net/showpost.php?p=1227321&postcount=4
