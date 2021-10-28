@@ -11,7 +11,7 @@
 #include <sdktools>
 #include <sdktools_functions>
 
-#define PLUGIN_VERSION "0.0.3"
+#define PLUGIN_VERSION "0.0.4"
 
 new Handle:g_njLockCP = INVALID_HANDLE;
 new bool:isFirst      = true;
@@ -27,7 +27,7 @@ public Plugin:myinfo =
 
 public OnPluginStart()
 {
-	CreateConVar("nj_lockcp_version", PLUGIN_VERSION, "nj lock the capture", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY);
+	CreateConVar("nj_lockcp_version", PLUGIN_VERSION, "nj lock the capture", FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY);
 	g_njLockCP = CreateConVar("nj_lockcp", "1", "lock the capture Enable/Disable (0 = disabled | 1 = enabled)", 0, true, 0.0, true, 1.0);
 	
 	HookEvent("teamplay_round_start", LockTheCapture);
